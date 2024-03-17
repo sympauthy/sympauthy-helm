@@ -9,9 +9,12 @@ permissions:
 
 jobs:
   release:
+    name: Publish Helm chart to GitHub Pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+            fetch-depth: 0
 
       - name: Configure Git
         run: |
