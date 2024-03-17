@@ -1,41 +1,36 @@
 {{/*
-Expand the name of the chart.
-*/}}
-{{- define "sympauthy.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "sympauthy.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-{{/*
-Create chart name and version as used by the chart label.
+Name and version of the chart
 */}}
 {{- define "sympauthy.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
+Name of the auth component.
+*/}}
+{{- define "sympauthy.names.auth" -}}
+{{- $componentName := default "auth" .Values.nameOverrides.auth }}
+{{- printf "%s-%s" $.Chart.Name $componentName | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Fullname of resources deployed for the auth component.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "sympauthy.fullnames.auth" -}}
+{{- if .Values.fullnameOverrides.auth }}
+{{- .Values.fullnameOverrides.auth | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default "auth" .Values.nameOverrides.auth }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
-{{- define "sympauthy.labels" -}}
+{{- define "sympauthy.labels.common" -}}
 helm.sh/chart: {{ include "sympauthy.chart" . }}
-{{ include "sympauthy.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -43,20 +38,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels
+Common labels for resources of the auth component.
 */}}
-{{- define "sympauthy.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "sympauthy.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "sympauthy.labels.auth" -}}
+{{ include "sympauthy.labels.common" . }}
+{{ include "sympauthy.selectorLabels.auth" . }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Selector labels for 
 */}}
-{{- define "sympauthy.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "sympauthy.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
+{{- define "sympauthy.selectorLabels.auth" -}}
+app.kubernetes.io/name: {{ include "sympauthy.names.auth" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

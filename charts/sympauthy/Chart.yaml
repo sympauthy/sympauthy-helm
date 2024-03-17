@@ -5,5 +5,5 @@ type: application
 
 description: A simple, self-hosted and open source OAuth 2/OpenID authorization server.
 home: https://github.com/sympauthy
-version: 0.1.0
-appVersion: "0.1.0"
+version: 0.2.0
+appVersion: "0.2.0"
