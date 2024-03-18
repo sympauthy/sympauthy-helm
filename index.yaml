@@ -2,6 +2,18 @@ apiVersion: v1
 entries:
   sympauthy:
   - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2024-03-18T18:40:24.750491939Z"
+    description: A simple, self-hosted and open source OAuth 2/OpenID authorization
+      server.
+    digest: 105699e2935378684e2c274c540999d1610b61290c04470cc3fa482ea657713f
+    home: https://github.com/sympauthy
+    name: sympauthy
+    type: application
+    urls:
+    - https://github.com/sympauthy/sympauthy-helm/releases/download/sympauthy-0.2.0/sympauthy-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2024-03-17T10:24:50.977866373Z"
     description: A simple, self-hosted and open source OAuth 2/OpenID authorization
@@ -13,4 +25,4 @@ entries:
     urls:
     - https://github.com/sympauthy/sympauthy-helm/releases/download/sympauthy-0.1.0/sympauthy-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-17T10:24:50.97791848Z"
+generated: "2024-03-18T18:40:24.750502138Z"
