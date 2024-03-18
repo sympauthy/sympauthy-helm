@@ -1,0 +1,11 @@
+{{- if .Values.configs.auth }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sympauthy.configmaps.auth" . }}
+  labels:
+    {{- include "sympauthy.labels.auth" . | nindent 4 }}
+data:
+  application.yml: |
+    {{- toYaml .Values.configs.auth | nindent 4 }}
+{{- end }}

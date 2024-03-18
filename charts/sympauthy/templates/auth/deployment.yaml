@@ -35,6 +35,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.images.auth.repository }}:{{ .Values.images.auth.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.images.auth.pullPolicy }}
+          env:
+            {{- include "sympauthy.envs.auth" . | nindent 12 }}
           ports:
             - name: http
               containerPort: {{ .Values.services.auth.port }}
@@ -49,14 +51,43 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources.auth | nindent 12 }}
-          {{- with .Values.volumeMounts.auth }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes.auth }}
+            {{- if .Values.configs.auth }} 
+            # Mount ConfigMap containing application configuration.
+            - name: {{ include "sympauthy.configmaps.auth" . }}
+              mountPath: "/etc/configmap"
+              readOnly: true
+            {{- end }}
+            {{- if .Values.secrets.auth }} 
+            # Mount Secret containing application configuration.
+            - name: {{ include "sympauthy.secrets.auth" . }}
+              mountPath: "/etc/secret"
+              readOnly: true
+            {{- end }}
+            {{- with .Values.volumes.auth }} 
+            # Mount other user define volumes.
+            {{- toYaml .Values.volumeMounts.auth | nindent 12 }}
+            {{- end }}
       volumes:
+        {{- if .Values.configs.auth }} 
+        # Expose application.yml from ConfigMap as a volume.
+        - name: {{ include "sympauthy.configmaps.auth" . }}
+          configMap:
+            name: {{ include "sympauthy.configmaps.auth" . }}
+            items:
+            - key: "application.yml"
+              path: "application.yml"
+        {{- end }}
+        {{- if .Values.configs.auth }} 
+        # Expose application.yml from Secret as a volume.
+        - name: {{ include "sympauthy.secrets.auth" . }}
+          secret:
+            secretName: {{ include "sympauthy.secrets.auth" . }}
+        {{- end}}
+        {{- with .Values.volumes.auth }} 
+        # Expose other user defined volumes.
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelectors.auth }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
