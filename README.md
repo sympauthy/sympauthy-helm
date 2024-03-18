@@ -8,6 +8,8 @@ This chart will deploy every component of SymAuthy:
 
 Each component will be deployed in its own dedicated [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).
 
+> SympAuthy is not stable yet. Compatibilty between pre-1.0 release of this chart and nightly builds of SympAuthy may break at any time.
+
 ## Installation
 
 ### Add the Helm repository
