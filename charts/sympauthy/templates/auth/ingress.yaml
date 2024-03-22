@@ -1,7 +1,7 @@
 {{- if .Values.ingresses.auth.enabled -}}
 {{- $fullName := include "sympauthy.fullnames.auth" . -}}
 {{- $svcPort := .Values.services.auth.port -}}
-{{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+{{- if and .Values.ingresses.auth.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingresses.auth.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.ingresses.auth.annotations "kubernetes.io/ingress.class" .Values.ingresses.auth.className}}
   {{- end }}
@@ -18,7 +18,7 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "sympauthy.labels.auth" . | nindent 4 }}
-  {{- with .Values.ingress.annotations.auth }}
+  {{- with .Values.ingresses.auth.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
