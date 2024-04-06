@@ -9,6 +9,10 @@ images:
 
 # Unsecured configurations being passed to the image.
 configs:
+  # List of configurations (micronaut environements) to enable on the image.
+  enabled:
+    auth: default
+
   # List of config for the autorization server available here:
   # https://github.com/sympauthy/sympauthy/wiki/4---Configuration
   auth: {}

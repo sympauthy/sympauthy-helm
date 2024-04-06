@@ -36,6 +36,10 @@ spec:
           image: "{{ .Values.images.auth.repository }}:{{ .Values.images.auth.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.images.auth.pullPolicy }}
           env:
+            {{- if .Values.configs.enabled.auth }}
+            - name: MICRONAUT_ENVIRONMENTS
+              value: {{ .Values.configs.enabled.auth }}
+            {{- end }}
             {{- include "sympauthy.envs.auth" . | nindent 12 }}
           ports:
             - name: http
